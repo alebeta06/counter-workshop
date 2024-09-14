@@ -10,7 +10,18 @@ pub mod counter {
     struct Storage {
         counter: u32,
     }
+    
+    #[event]
+    #[derive(Drop, starknet::Event)]
+    enum Event {
+        CounterIncreased: CounterIncreased,
+    }
 
+    #[derive(Drop, starknet::Event)]
+    struct CounterIncreased {
+        #[key]
+        counter: u32,
+    }
 
    #[constructor]
    fn constructor(ref self: ContractState, input: u32) {
@@ -25,6 +36,7 @@ pub mod counter {
 
        fn increase_counter(ref self: ContractState) {
            self.counter.write(self.counter.read() + 1);
-       }
+           self.emit(CounterIncreased{counter: self.counter.read()});
+        }
     }  
 }
