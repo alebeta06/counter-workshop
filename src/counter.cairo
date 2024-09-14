@@ -1,6 +1,7 @@
 #[starknet::interface]
 trait Icounter<T> {
     fn get_counter(self: @T) -> u32;
+    fn increase_counter(ref self: T);
 }
 
 #[starknet::contract]
@@ -18,8 +19,12 @@ pub mod counter {
 
    #[abi(embed_v0)]
    impl IcounterImpl of super::Icounter<ContractState> {
-    fn get_counter(self: @ContractState) -> u32 {
-        self.counter.read()
-    }
-   }  
+       fn get_counter(self: @ContractState) -> u32 {
+          self.counter.read()
+        }
+
+       fn increase_counter(ref self: ContractState) {
+           self.counter.write(self.counter.read() + 1);
+       }
+    }  
 }
