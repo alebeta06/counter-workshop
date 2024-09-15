@@ -6,6 +6,8 @@ trait Icounter<T> {
 
 #[starknet::contract]
 pub mod counter {
+    use starknet::ContractAddress;
+
     #[storage]
     struct Storage {
         counter: u32,
@@ -24,8 +26,8 @@ pub mod counter {
     }
 
    #[constructor]
-   fn constructor(ref self: ContractState, input: u32) {
-      self.counter.write(input);
+   fn constructor(ref self: ContractState, value: u32) {
+      self.counter.write(value);
    }
 
    #[abi(embed_v0)]
@@ -35,8 +37,9 @@ pub mod counter {
         }
 
        fn increase_counter(ref self: ContractState) {
-           self.counter.write(self.counter.read() + 1);
-           self.emit(CounterIncreased{counter: self.counter.read()});
+           let old_val = self.counter.read();
+           self.counter.write(old_val + 1);
+           self.emit(CounterIncreased { counter: old_val + 1 });
         }
     }  
 }
