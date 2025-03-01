@@ -9,6 +9,9 @@ edition = "2023_01"
 starknet = ">=2.8.0"
 
 [[target.starknet-contract]]
+
+build-external-contracts = ["kill_switch::KillSwitch"]
+
 casm = true
 siers = true
 

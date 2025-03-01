@@ -4,6 +4,7 @@ trait Icounter<T> {
     fn increase_counter(ref self: T);
 }
 
+
 #[starknet::contract]
 pub mod counter {
     use starknet::ContractAddress;
